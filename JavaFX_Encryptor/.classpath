@@ -7,10 +7,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/david.jahn/Dropbox/Privat/Java/eclipse-workspace_private/JavaFX_Encryptor/lib/IOUtils/commons-io-2.6-javadoc.jar"/>
-	<classpathentry kind="lib" path="/Users/david.jahn/Dropbox/Privat/Java/eclipse-workspace_private/JavaFX_Encryptor/lib/IOUtils/commons-io-2.6-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/david.jahn/Dropbox/Privat/Java/eclipse-workspace_private/JavaFX_Encryptor/lib/IOUtils/commons-io-2.6-test-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/david.jahn/Dropbox/Privat/Java/eclipse-workspace_private/JavaFX_Encryptor/lib/IOUtils/commons-io-2.6-tests.jar"/>
-	<classpathentry kind="lib" path="/Users/david.jahn/Dropbox/Privat/Java/eclipse-workspace_private/JavaFX_Encryptor/lib/IOUtils/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="/Users/david.jahn/git/private-repository/JavaFX_Encryptor/lib/IOUtils/commons-io-2.6-javadoc.jar"/>
+	<classpathentry kind="lib" path="/Users/david.jahn/git/private-repository/JavaFX_Encryptor/lib/IOUtils/commons-io-2.6-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/david.jahn/git/private-repository/JavaFX_Encryptor/lib/IOUtils/commons-io-2.6-test-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/david.jahn/git/private-repository/JavaFX_Encryptor/lib/IOUtils/commons-io-2.6-tests.jar"/>
+	<classpathentry kind="lib" path="/Users/david.jahn/git/private-repository/JavaFX_Encryptor/lib/IOUtils/commons-io-2.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

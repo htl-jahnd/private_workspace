@@ -10,10 +10,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/david.jahn/Dropbox/Privat/Java/eclipse-workspace_private/Static_Things/Play_Audio/JMF/jmf-2.1.1e.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="/Users/david.jahn/git/private-repository/Static_Things/Play_Audio/JMF/jmf-2.1.1e.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
