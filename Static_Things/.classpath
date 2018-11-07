@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="Font_Saver"/>
+	<classpathentry kind="src" path="Exceptions"/>
+	<classpathentry kind="src" path="Play_Audio"/>
+	<classpathentry kind="src" path="I_O_Files"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-9">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/david.jahn/Dropbox/Privat/Java/eclipse-workspace_private/Static_Things/Play_Audio/JMF/jmf-2.1.1e.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

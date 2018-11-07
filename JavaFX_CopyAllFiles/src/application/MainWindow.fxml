@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="393.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+   <children>
+      <TextField fx:id="txtFromDirectory" layoutX="41.0" layoutY="159.0" />
+      <TextField fx:id="txtToDirectory" layoutX="326.0" layoutY="159.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets></TextField>
+      <Button fx:id="btnFileChooserFrom" contentDisplay="GRAPHIC_ONLY" layoutX="224.0" layoutY="159.0" mnemonicParsing="false" onAction="#fileChooserFromClicked" prefHeight="27.0" prefWidth="38.0" text="Button">
+         <graphic>
+            <ImageView fitHeight="18.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../ressources/pictures/Documents-icon.png" />
+               </image>
+          </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="btnFileChooserTo" contentDisplay="GRAPHIC_ONLY" layoutX="511.0" layoutY="158.0" mnemonicParsing="false" onAction="#fileChooserToClicked" prefHeight="27.0" prefWidth="38.0" text="Button">
+         <graphic>
+            <ImageView fitHeight="19.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../ressources/pictures/Documents-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label layoutX="45.0" layoutY="107.0" text="Source Path:" />
+      <Label layoutX="326.0" layoutY="107.0" text="Destination Path:" />
+      <Button fx:id="btnExit" layoutX="45.0" layoutY="343.0" mnemonicParsing="false" onAction="#exit" prefHeight="27.0" prefWidth="79.0" text="Exit" />
+      <Button fx:id="btnStart" layoutX="464.0" layoutY="343.0" mnemonicParsing="false" onAction="#start" prefHeight="27.0" prefWidth="79.0" text="Start" />
+      <ProgressBar fx:id="progressBar" layoutX="100.0" layoutY="277.0" prefHeight="20.0" prefWidth="271.0" progress="0.0" />
+      <ProgressIndicator fx:id="progressIndicator" layoutX="413.0" layoutY="264.0" progress="0.0" />
+      <Label fx:id="lblCopyStatus" layoutX="464.0" layoutY="269.0" textFill="BLUE" />
+      
+   </children>
+</AnchorPane>
