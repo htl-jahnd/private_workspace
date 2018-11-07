@@ -12,7 +12,7 @@ public class Main_362
 	private static final int MIN_TIMES = 1;
 
 	public static void main(String[] args) throws Exception
-	{
+	{ 
 		ArrayList<String> tests = createTestCases(5, 5, 5);
 		try
 		{
