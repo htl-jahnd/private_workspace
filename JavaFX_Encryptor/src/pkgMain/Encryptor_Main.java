@@ -1,35 +1,39 @@
 package pkgMain;
 
-import java.io.File;
-import pkgData.Database;
-import pkgMisc.TextUtils;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
 
-public class Encryptor_Main
-{
+public class Encryptor_Main extends Application {
+	@Override
+	// TODO
+	// Drag and drop for file encryptor
+	// https://stackoverflow.com/questions/32534113/javafx-drag-and-drop-a-file-into-a-program
+	// Add application icon, right click menu in dock
+	public void start(Stage primaryStage) {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("../pkgGUI/Encryptor_Main_Scene.fxml"));
 
-	public static void main(String[] args) throws Exception
-	{
-		Database db = Database.newInstance();
-		// String test = "12345678a123";
-		// String encrypt = db.doEncrypt(test, "Bar12345Bar12345".toCharArray());
-		// System.out.println(encrypt);
-		// String decrypt= db.doDecrypt(encrypt, "Bar12345Bar12345".toCharArray());
-		//
-		// System.out.println(decrypt);
+//			primaryStage.getIcons().addAll(
+//					new Image("http://icons.iconarchive.com/icons/graphicloads/flat-finance/256/keys-icon.png"));
+			// new Image("../Images/icon_64x64.png"),
+			// new Image("../Images/icon_128x128.png"));
 
-		File f = new File("/Users/david.jahn/Desktop/Test/normal.txt");
-		String everything = TextUtils.readText(f);
-		String enc = db.doEncrypt(everything, "Hello World".toCharArray());
-		File f1 = new File("/Users/david.jahn/Desktop/Test/normal.enc");
-		f1.createNewFile();
-		TextUtils.writeText(f1, enc);
-
-		f = new File("/Users/david.jahn/Desktop/Test/normal.enc");
-		everything = TextUtils.readText(f);
-		String dec = db.doDecrypt(everything, "Hello World".toCharArray());
-		f1 = new File("/Users/david.jahn/Desktop/Test/normal1.txt");
-		f1.createNewFile();
-		TextUtils.writeText(f1, dec);
+//			primaryStage.initStyle(StageStyle.UTILITY);
+//			primaryStage.setResizable(false);
+			primaryStage.setTitle("Encryptor / Decryptor");
+			primaryStage.setScene(new Scene(root));
+			primaryStage.show();
+		} catch (Exception e) {
+			pkgMisc.ExceptionHandler.hanldeUnexpectedException(e);
+		}
 	}
 
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
