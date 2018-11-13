@@ -1,25 +1,17 @@
 package pkgMain;
 
-import java.util.ArrayList;
-import javax.crypto.Cipher;
-
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import pkgData.*;
-import javafx.stage.StageStyle;
-import pkgController.Controller_Login;
 
 public class Password_Manager_MainAppl extends Application
 {
 
     public static void main(String[] args) throws Exception
     {
-
-
+    	launch(args);
     }
 
     @Override
@@ -27,7 +19,7 @@ public class Password_Manager_MainAppl extends Application
     {
 	try
 	{
-	    Parent root = FXMLLoader.load(getClass().getResource("../pkgGUI/GUI_Login.fxml"));
+	    Parent root = FXMLLoader.load(getClass().getResource("ressources/GUI_Login.fxml"));
 	    primaryStage.setTitle("Copy Files");
 	    primaryStage.setScene(new Scene(root));
 	    

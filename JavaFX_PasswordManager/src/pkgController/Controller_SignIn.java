@@ -18,7 +18,7 @@ import pkgData.Database;
 import pkgMisc.ExceptionHandler;
 import pkgMisc.SceneSwitcher;
 
-public class Controller_Login
+public class Controller_SignIn
 {
 
     @FXML
