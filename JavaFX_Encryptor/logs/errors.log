@@ -140,3 +140,8 @@
     pkgController.Encryptor_Controller.startText(Encryptor_Controller.java:113)
     java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
     java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+2019-01-12T16:47:06.116997: Message: Please enter a password!, Trace:     pkgController.Encryptor_Controller.checkPassword(Encryptor_Controller.java:252)
+    pkgController.Encryptor_Controller.doEncrypt(Encryptor_Controller.java:263)
+    pkgController.Encryptor_Controller.startText(Encryptor_Controller.java:110)
+    java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
