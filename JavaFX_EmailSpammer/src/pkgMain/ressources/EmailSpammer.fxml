@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.web.HTMLEditor?>
 
-<AnchorPane prefHeight="465.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkgMain.Controller_EmailSpammerMain">
+<AnchorPane prefHeight="465.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkgController.Controller_EmailSpammerMain">
    <children>
       <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -49,7 +49,7 @@
             <Label alignment="TOP_LEFT" contentDisplay="TOP" text="Content: " GridPane.rowIndex="3" />
             <HTMLEditor fx:id="htmlMailContent" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" prefHeight="241.0" prefWidth="562.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
             <Label prefHeight="17.0" prefWidth="84.0" text="Times:" GridPane.rowIndex="2" />
-            <JFXSlider blockIncrement="1.0" majorTickUnit="5.0" max="50.0" min="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="1.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+            <JFXSlider fx:id="sliderAmmount" blockIncrement="1.0" majorTickUnit="5.0" max="50.0" min="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="1.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <JFXButton fx:id="btnSend" defaultButton="true" layoutX="608.0" layoutY="407.0" onAction="#onSelectButton" prefHeight="27.0" prefWidth="87.0" ripplerFill="#54439e" text="Send" />

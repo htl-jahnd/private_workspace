@@ -1,0 +1,50 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+
+/* Styling the slider thumb */
+.jfx-slider > .thumb {
+     -fx-background-color:  #4059a9;
+}
+
+/* Styling the filled track */
+.jfx-slider > .colored-track {
+     -fx-background-color:  #4059a9;
+}
+
+/* Styling the animated thumb */
+.jfx-slider > .animated-thumb {
+     -fx-background-color:  #4059a9;
+}
+
+/* Styling the slider value text inside animated thumb */
+.jfx-slider .slider-value {
+     -fx-fill: white;
+     -fx-stroke: white;
+}
+
+.jfx-slider .axis {
+	-fx-tick-label-fill: black;
+}
+
+
+.jfx-button{
+	-fx-background-color: #4059a9;
+	-fx-text-fill: white;
+}
+
+.jfx-button:hover{
+	-fx-text-fill: white;
+	-fx-background-color: #4865c4;
+}
+
+#btnExit, #btnCancel{
+	-fx-background-color: #c44848;
+	-fx-text-fill: white;
+} 
+
+#btnExit:hover, #btnCancel:hover{
+	-fx-background-color: #db5151;
+	-fx-text-fill: white;
+} 
+
+

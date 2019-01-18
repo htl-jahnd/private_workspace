@@ -1,0 +1,124 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.root{
+	-fx-background-color: #3c3d44;
+	
+}
+
+.label {
+	-fx-text-fill: white;
+}
+.jfx-button{
+	-fx-background-color: #AAB6C7;
+}
+
+.jfx-button:hover{
+	
+	-fx-background-color: #5B91DC;
+}
+
+.menu-bar{
+	-fx-background-color: #2d2e33;
+}
+
+.menu{
+	-fx-background-color: #2d2e33;
+}
+.menu .label{
+	-fx-text-fill: white;
+}
+
+
+.menu-item .label {
+    -fx-text-fill: white;
+}
+
+.menu-item:focused {
+    -fx-background-color: #5B91DC;
+}
+
+.menu-item:focused .label {
+      -fx-text-fill: white;
+}
+
+.context-menu {
+    -fx-background-color: black;
+    -fx-background-insets: 0.0, 1.0, 2.0;
+    -fx-background-radius: 0.0 6.0 6.0 6.0, 0.0 5.0 5.0 5.0, 0.0 4.0 4.0 4.0;
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; 
+}
+
+.jfx-text-field
+{
+    -jfx-focus-color: #5B91DC;
+    -fx-text-fill: white;
+   
+}
+
+.text-field .input-line
+{
+    -fx-background-color: #3e6193;
+}
+
+/* Styling the slider thumb */
+.jfx-slider > .thumb {
+     -fx-background-color:  #5B91DC;
+}
+
+/* Styling the filled track */
+.jfx-slider > .colored-track {
+     -fx-background-color:  #5B91DC;
+}
+
+/* Styling the animated thumb */
+.jfx-slider > .animated-thumb {
+     -fx-background-color:  #5B91DC;
+}
+
+/* Styling the slider value text inside animated thumb */
+.jfx-slider .slider-value {
+     -fx-fill: white;
+     -fx-stroke: white;
+}
+
+.jfx-slider .axis {
+	-fx-tick-label-fill: white;
+}
+
+.jfx-toggle-button{
+	 -jfx-toggle-color: #5B91DC;
+	 -jfx-toggle-line-color: #AAB6C7;
+}
+
+.jfx-combo-box{
+	-jfx-focus-color:#5B91DC;
+	-jfx-unfocus-color: #3e6193;
+	-fx-text-fill: white;
+	
+}
+
+.jfx-combo-box .list-cell {
+    -fx-background-color: #3c3d44;
+    -fx-text-fill: white;
+}
+
+.jfx-combo-box .list-cell:hover {
+    -fx-background-color: #4d4e56;
+    -fx-text-fill: white;
+}
+
+.jfx-password-field{
+	 -jfx-focus-color: #5B91DC;
+    -fx-text-fill: white;
+}
+
+#btnExit, #btnCancel{
+	-fx-background-color: #c44848;
+	-fx-text-fill: white;
+} 
+
+#btnExit:hover, #btnCancel:hover{
+	-fx-background-color: #db5151;
+	-fx-text-fill: white;
+} 
+

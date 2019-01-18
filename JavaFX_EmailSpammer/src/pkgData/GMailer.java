@@ -20,7 +20,6 @@ public class GMailer
 	private String senderPassword;
 	private String[] toAddresses;
 	private static final String PORT = "587";
-	private String host = "smtp.gmail.com";
 	private String mailSubject;
 	private String mailContent;
 	private static final String CONTENT_TYPE = "text/HTML; charset=UTF-8";
@@ -28,8 +27,9 @@ public class GMailer
 	static Properties mailServerProperties;
 	static Session getMailSession;
 	static MimeMessage generateMailMessage;
+	private MailProviderSMTP provider;
 
-	public GMailer(String from, String fromPwd, String[] to, String subject, String content, String host)
+	public GMailer(String from, String fromPwd, String[] to, String subject, String content, MailProviderSMTP prov)
 	{
 		super();
 		this.senderAddress = from;
@@ -37,7 +37,7 @@ public class GMailer
 		this.toAddresses = to;
 		this.mailSubject = subject;
 		this.mailContent = content;
-		this.host = host;
+		this.provider = prov;
 	}
 
 	static public String showEmailInputDialog()
@@ -55,7 +55,7 @@ public class GMailer
 		return ret;
 	}
 
-	public void sendMail() throws AddressException, MessagingException
+	public void sendMail() throws Exception
 	{
 		// Step1
 		mailServerProperties = System.getProperties();
@@ -74,19 +74,18 @@ public class GMailer
 
 		generateMailMessage.setContent(mailContent, CONTENT_TYPE);
 		
-		
 		// Step3
 		Transport transport = getMailSession.getTransport(TRANSPORT_PROTOCOL);
 
 		// Enter your correct gmail UserID and Password
-		transport.connect(host, senderAddress, senderPassword);
+		transport.connect(provider.getSmtpHostString(), senderAddress, senderPassword);
 		transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
 		transport.close();
 	}
 
 	public GMailer(String from, String fromPWd, String[] to)
 	{
-		this(from, fromPWd, to, "Default Subject", "Default Body", "smtp.gmail.com");
+		this(from, fromPWd, to, "Default Subject", "Default Body",MailProviderSMTP.Google);
 	}
 
 	public String getFrom()
@@ -139,14 +138,5 @@ public class GMailer
 		this.mailContent = content;
 	}
 
-	public String getHost()
-	{
-		return host;
-	}
-
-	public void setHost(String host)
-	{
-		this.host = host;
-	}
 
 }
