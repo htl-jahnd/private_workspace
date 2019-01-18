@@ -1,7 +1,17 @@
 package pkgMain;
 	
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.internet.AddressException;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
+import pkgData.EmailUtil;
+import pkgData.GMailer;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +31,26 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		launch(args);
+//		launch(args);
+		
+		
+		final String fromEmail = "email.spam.konto@gmail.com"; //requires valid gmail id
+		final String password = "SpamKonto123"; // correct password for gmail id
+		final String[] toEmail = new String [1];
+		toEmail[0] = "david.jahn2000@gmail.com";
+		
+		GMailer g = new GMailer(fromEmail, password, toEmail);
+		try
+		{
+			g.sendMail();
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("sent");
+		
+		
+		
 	}
 }

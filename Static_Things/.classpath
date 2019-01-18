@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="Mailer/lib/gson/gson-2.5.jar"/>
 	<classpathentry kind="lib" path="Mailer/lib/javaMail/javax.mail.jar"/>
 	<classpathentry kind="lib" path="Validator/lib/commons-validator-1.6/commons-validator-1.6.jar"/>
+	<classpathentry kind="lib" path="Mailer/Activation/activation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
