@@ -2,7 +2,7 @@
 
 .root{
 	-fx-background-color: #3c3d44;
-	
+	-fx-font-family: "Heiti TC";
 }
 
 .label {
@@ -122,3 +122,26 @@
 	-fx-text-fill: white;
 } 
 
+.html-editor .button, .html-editor .toggle-button
+{
+	-fx-background-color: #5B91DC;
+}
+
+.html-editor-background 
+{
+	-fx-color-label-visible: true;
+}
+
+.html-editor-foreground 
+{
+	-fx-color-label-visible: true;
+}
+
+.heading{
+	-fx-border-width: 0 0 3 0; 
+	-fx-border-color: darkgray ;
+}
+
+#settingsHeader{
+	-fx-font-size: 22pt;
+}

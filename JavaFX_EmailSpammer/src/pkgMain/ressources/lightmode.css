@@ -1,6 +1,10 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
 
+.root{
+	-fx-font-family: "Heiti TC";
+}
+
 /* Styling the slider thumb */
 .jfx-slider > .thumb {
      -fx-background-color:  #4059a9;
@@ -26,7 +30,6 @@
 	-fx-tick-label-fill: black;
 }
 
-
 .jfx-button{
 	-fx-background-color: #4059a9;
 	-fx-text-fill: white;
@@ -47,4 +50,11 @@
 	-fx-text-fill: white;
 } 
 
+.heading{
+	-fx-border-width: 0 0 3 0; 
+	-fx-border-color: darkgray ;
+}
 
+#settingsHeader{
+	-fx-font-size: 22pt;
+}

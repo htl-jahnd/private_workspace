@@ -28,8 +28,9 @@ public class GMailer
 	static Session getMailSession;
 	static MimeMessage generateMailMessage;
 	private MailProviderSMTP provider;
+	private String fromName;
 
-	public GMailer(String from, String fromPwd, String[] to, String subject, String content, MailProviderSMTP prov)
+	public GMailer(String from, String fromPwd, String[] to, String subject, String content, MailProviderSMTP prov, String fromName)
 	{
 		super();
 		this.senderAddress = from;
@@ -38,6 +39,7 @@ public class GMailer
 		this.mailSubject = subject;
 		this.mailContent = content;
 		this.provider = prov;
+		this.fromName = fromName;
 	}
 
 	static public String showEmailInputDialog()
@@ -71,9 +73,8 @@ public class GMailer
 			generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddresses[i]));
 		}
 		generateMailMessage.setSubject(mailSubject);
-
 		generateMailMessage.setContent(mailContent, CONTENT_TYPE);
-		
+		generateMailMessage.setFrom(new InternetAddress(senderAddress, fromName));
 		// Step3
 		Transport transport = getMailSession.getTransport(TRANSPORT_PROTOCOL);
 
@@ -85,7 +86,7 @@ public class GMailer
 
 	public GMailer(String from, String fromPWd, String[] to)
 	{
-		this(from, fromPWd, to, "Default Subject", "Default Body",MailProviderSMTP.Google);
+		this(from, fromPWd, to, "Default Subject", "Default Body",MailProviderSMTP.Google, "Example Name");
 	}
 
 	public String getFrom()

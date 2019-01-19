@@ -1,7 +1,5 @@
 package pkgController;
 
-import java.io.IOException;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTextField;
@@ -14,9 +12,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.HTMLEditor;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import pkgData.Database;
 import pkgData.GMailer;
+import pkgData.MailAccount;
 import pkgMisc.AddressFormatValidator;
 import pkgMisc.ExceptionHandler;
 
@@ -83,7 +84,7 @@ public class Controller_EmailSpammerMain
 		String subj = txtMailSubject.getText();
 		String cont = htmlMailContent.getHtmlText();
 		GMailer gmailer = new GMailer(tmpAcc.getAddress(), tmpAcc.getPassword(), toArr, subj, cont,
-				tmpAcc.getProvider());
+				tmpAcc.getProvider(), tmpAcc.getName());
 		for (int i = 0; i < sliderAmmount.getValue(); i++)
 		{
 			gmailer.sendMail();
@@ -109,12 +110,33 @@ public class Controller_EmailSpammerMain
 				{
 					scene.getStylesheets().add("pkgMain/ressources/lightmode.css");
 				}
+				st.initOwner(btnExit.getScene().getWindow());
+				st.initStyle(StageStyle.UTILITY);
+				st.initModality(Modality.APPLICATION_MODAL);
+				st.setResizable(false);
 				st.setScene(scene);
 				st.show();
 				st.requestFocus();
 			} else if (event.getSource().equals(mntmAbout))
 			{
-				// TODO show about screen
+				Stage st = new Stage();
+				AnchorPane root = (AnchorPane) FXMLLoader
+						.load(getClass().getResource("/pkgMain/ressources/About.fxml"));
+				Scene scene = new Scene(root);
+				if (db.isDarkMode())
+				{
+					scene.getStylesheets().add("pkgMain/ressources/darkmode.css");
+				} else
+				{
+					scene.getStylesheets().add("pkgMain/ressources/lightmode.css");
+				}
+				st.initOwner(btnExit.getScene().getWindow());
+				st.initStyle(StageStyle.UTILITY);
+				st.initModality(Modality.APPLICATION_MODAL);
+				st.setResizable(false);
+				st.setScene(scene);
+				st.show();
+				st.requestFocus();
 			}
 		} catch (Exception e)
 		{

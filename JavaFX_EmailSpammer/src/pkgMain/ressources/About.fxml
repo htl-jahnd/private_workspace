@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="287.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1">
+   <children>
+      <Label alignment="CENTER" layoutY="128.0" prefHeight="25.0" prefWidth="186.0" text="Email Spammer" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="15.0" layoutY="174.0" prefHeight="17.0" prefWidth="185.0" text="© 2019 HTL Villach" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="0.0" />
+      <Label layoutX="15.0" layoutY="238.0" prefHeight="17.0" prefWidth="185.0" text="Alle Rechte vorbehalten." />
+      <Label layoutX="15.0" layoutY="206.0" prefHeight="17.0" prefWidth="185.0" text="Version 1.0.1" />
+      <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="50.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/icon.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

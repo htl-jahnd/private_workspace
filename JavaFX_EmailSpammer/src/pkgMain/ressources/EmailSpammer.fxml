@@ -52,7 +52,7 @@
             <JFXSlider fx:id="sliderAmmount" blockIncrement="1.0" majorTickUnit="5.0" max="50.0" min="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="1.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <JFXButton fx:id="btnSend" defaultButton="true" layoutX="608.0" layoutY="407.0" onAction="#onSelectButton" prefHeight="27.0" prefWidth="87.0" ripplerFill="#54439e" text="Send" />
+      <JFXButton fx:id="btnSend" layoutX="608.0" layoutY="407.0" onAction="#onSelectButton" prefHeight="27.0" prefWidth="87.0" ripplerFill="#54439e" text="Send" />
       <JFXButton fx:id="btnExit" cancelButton="true" layoutX="40.0" layoutY="407.0" onAction="#onSelectButton" prefHeight="27.0" prefWidth="57.0" ripplerFill="#483985" text="Exit" />
    </children>
 </AnchorPane>

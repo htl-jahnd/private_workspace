@@ -1,25 +1,18 @@
 package pkgController;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 
-import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import pkgData.Database;
+import pkgData.ELanguages;
 import pkgData.MailProviderSMTP;
 import pkgMisc.AddressFormatValidator;
 import pkgMisc.ExceptionHandler;
@@ -31,7 +24,7 @@ public class Controller_Settings
 	private JFXToggleButton toggleDarkMode;
 
 	@FXML
-	private JFXComboBox<String> cmbxLanguage;
+	private JFXComboBox<ELanguages> cmbxLanguage;
 
 	@FXML
 	private JFXTextField txtMailAdress;
@@ -47,8 +40,11 @@ public class Controller_Settings
 
 	@FXML
 	private JFXButton btnCancel;
+	
+    @FXML
+    private JFXTextField txtMailFromName;
 
-	private ObservableList<String> listLanguages;
+	private ObservableList<ELanguages> listLanguages;
 	private ObservableList<MailProviderSMTP> listMailProviders;
 
 	private Database db;
@@ -59,7 +55,7 @@ public class Controller_Settings
 		listLanguages = FXCollections.observableArrayList();
 		listMailProviders = FXCollections.observableArrayList();
 
-		listLanguages.add("English");
+		listLanguages.addAll(ELanguages.values());
 		cmbxLanguage.setItems(listLanguages);
 
 		listMailProviders.addAll(MailProviderSMTP.values());
@@ -72,6 +68,7 @@ public class Controller_Settings
 		cmbxLanguage.setValue(db.getLanguage());
 		cmbxMailProvider.setValue(db.getAccount().getProvider());
 		toggleDarkMode.setSelected(db.isDarkMode());
+		txtMailFromName.setText(db.getAccount().getName());
 	}
 
 	@FXML
@@ -88,9 +85,12 @@ public class Controller_Settings
 					throw new Exception("Please enter a valid mail address");
 				else if (txtMailPassword.getText().isEmpty())
 					throw new Exception("Please enter a valid password");
+				else if(txtMailFromName.getText().isEmpty())
+					throw new Exception("Please enter a valid name");
 				db.getAccount().setAddress(txtMailAdress.getText());
 				db.getAccount().setPassword(txtMailPassword.getText());
 				db.getAccount().setProvider(cmbxMailProvider.getValue());
+				db.getAccount().setName(txtMailFromName.getText());
 				db.setDarkMode(toggleDarkMode.isSelected());
 				db.setLanguage(cmbxLanguage.getValue());
 				db.writePreferences();
