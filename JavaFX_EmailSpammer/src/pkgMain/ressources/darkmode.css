@@ -145,3 +145,7 @@
 #settingsHeader{
 	-fx-font-size: 22pt;
 }
+
+.jfx-progress-bar > .bar {
+    -fx-background-color: #4059a9;
+}

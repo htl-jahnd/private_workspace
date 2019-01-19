@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTextField;
 
@@ -21,6 +22,7 @@ import javafx.stage.StageStyle;
 import pkgData.Database;
 import pkgData.GMailer;
 import pkgData.MailAccount;
+import pkgData.MailWorker;
 import pkgMisc.AddressFormatValidator;
 import pkgMisc.ExceptionHandler;
 
@@ -49,8 +51,12 @@ public class Controller_EmailSpammerMain
 
 	@FXML
 	private JFXSlider sliderAmmount;
+	
+    @FXML
+    private JFXProgressBar progressBarSending;
 
 	private Database db;
+	private MailWorker worker =null;
 
 	@FXML
 	void initialize()
@@ -68,6 +74,9 @@ public class Controller_EmailSpammerMain
 				if (!AddressFormatValidator.isValidEmailAddress(txtToMailAdress.getText()))
 					throw new Exception("Please enter a valid mail address");
 				doSendEmail();
+				progressBarSending.progressProperty().bind(worker.getDoubleProp());
+				progressBarSending.setVisible(true);
+				new Thread(worker).start();
 			} else if (event.getSource().equals(btnExit))
 			{
 				Platform.exit();
@@ -88,11 +97,8 @@ public class Controller_EmailSpammerMain
 		String cont = htmlMailContent.getHtmlText();
 		GMailer gmailer = new GMailer(tmpAcc.getAddress(), tmpAcc.getPassword(), toArr, subj, cont,
 				tmpAcc.getProvider(), tmpAcc.getName());
-		for (int i = 0; i < sliderAmmount.getValue(); i++)
-		{
-			gmailer.sendMail();
-		}
-
+		worker = new MailWorker(gmailer,(int) sliderAmmount.getValue()+1);
+		
 	}
 
 	@FXML

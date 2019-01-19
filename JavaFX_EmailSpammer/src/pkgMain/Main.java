@@ -28,8 +28,7 @@ import javafx.fxml.FXMLLoader;
 public class Main extends Application
 {
 
-	// TODO multi language support, 
-	// 	send emails with task -> ui more responsible,
+	// TODO send emails with task -> ui more responsible,
 	// 	progress bar for sending
 
 	@Override
