@@ -4,10 +4,10 @@ public class MailAccount
 {
 	private String address;
 	private String password;
-	private MailProviderSMTP provider;
+	private EMailProviderSMTP provider;
 	private String name;
 
-	public MailAccount(String address, String password, MailProviderSMTP provider, String name)
+	public MailAccount(String address, String password, EMailProviderSMTP provider, String name)
 	{
 		super();
 		this.address = address;
@@ -18,7 +18,7 @@ public class MailAccount
 
 	public MailAccount()
 	{
-		this("email.address@example.com", "password", MailProviderSMTP.Google, "Example Name");
+		this(Messages.getString("MailAccount.Constructor.DefaultSenderAddress"), Messages.getString("MailAccount.Constructor.DefaultPassword"), EMailProviderSMTP.Google, Messages.getString("MailAccount.Constructor.DefaultSenderName")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public String getAddress()
@@ -41,12 +41,12 @@ public class MailAccount
 		this.password = password;
 	}
 
-	public MailProviderSMTP getProvider()
+	public EMailProviderSMTP getProvider()
 	{
 		return provider;
 	}
 
-	public void setProvider(MailProviderSMTP provider)
+	public void setProvider(EMailProviderSMTP provider)
 	{
 		this.provider = provider;
 	}

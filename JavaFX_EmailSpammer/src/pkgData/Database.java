@@ -9,15 +9,15 @@ public class Database
 
 	private static Database INSTANCE = null;
 	private MailAccount account;
-	private static final String MAIL_PROPERTY = "mailAddress";
-	private static final String PASSWORD_PROPERTY = "mailPassword";
-	private static final String SMTP_PROPERTY = "smtpServer";
-	private static final String DARK_PROPERTY = "darkMode";
-	private static final String LANGUAGE_PROPERTY = "language";
-	private static final String MAIL_FROM_NAME = "mailFromName";
+	private static final String MAIL_PROPERTY = "mailAddress"; //$NON-NLS-1$
+	private static final String PASSWORD_PROPERTY = "mailPassword"; //$NON-NLS-1$
+	private static final String SMTP_PROPERTY = "smtpServer"; //$NON-NLS-1$
+	private static final String DARK_PROPERTY = "darkMode"; //$NON-NLS-1$
+	private static final String LANGUAGE_PROPERTY = "language"; //$NON-NLS-1$
+	private static final String MAIL_FROM_NAME = "mailFromName"; //$NON-NLS-1$
 	private Preferences preferences;
 	private boolean darkMode = false;
-	private ELanguages language = ELanguages.English;
+	private ELanguage language = ELanguage.English;
 
 	public static Database newInstance()
 	{
@@ -56,22 +56,22 @@ public class Database
 	public void readPreferences() throws Exception
 	{
 		preferences = Preferences.userNodeForPackage(getClass());
-		String mail = preferences.get(MAIL_PROPERTY, "email.address@example.com");
-		String pwd = preferences.get(PASSWORD_PROPERTY, "password");
+		String mail = preferences.get(MAIL_PROPERTY, "email.address@example.com"); //$NON-NLS-1$
+		String pwd = preferences.get(PASSWORD_PROPERTY, "password"); //$NON-NLS-1$
 		try
 		{
 			account.setPassword(PasswordUtils.decrypt(pwd, PasswordUtils.getSHA512Hash(mail)));
 		} catch (Exception ex)
 		{
 			account = new MailAccount();
-			throw new Exception("Something bad happen while restoring password/email-address");
+			throw new Exception(Messages.getString("Database.ReadPrefs.ExceptionText")); //$NON-NLS-1$
 		}
 		account.setAddress(mail);
-		account.setProvider(MailProviderSMTP.getProviderOfString(preferences.get(SMTP_PROPERTY, "smtp.gmail.com")));
-		account.setName(preferences.get(MAIL_FROM_NAME, "Example Name"));
+		account.setProvider(EMailProviderSMTP.getProviderOfString(preferences.get(SMTP_PROPERTY, "smtp.gmail.com"))); //$NON-NLS-1$
+		account.setName(preferences.get(MAIL_FROM_NAME, "Example Name")); //$NON-NLS-1$
 		this.setDarkMode(preferences.getBoolean(DARK_PROPERTY, false));
-		String lan = preferences.get(LANGUAGE_PROPERTY, ELanguages.English.getString());
-		this.setLanguage(ELanguages.getLanguage(lan));
+		String lan = preferences.get(LANGUAGE_PROPERTY, ELanguage.English.getString());
+		this.setLanguage(ELanguage.getLanguage(lan));
 	}
 
 	public boolean isDarkMode()
@@ -84,12 +84,12 @@ public class Database
 		this.darkMode = darkMode;
 	}
 
-	public ELanguages getLanguage()
+	public ELanguage getLanguage()
 	{
 		return language;
 	}
 
-	public void setLanguage(ELanguages language)
+	public void setLanguage(ELanguage language)
 	{
 		this.language = language;
 	}

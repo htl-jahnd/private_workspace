@@ -1,5 +1,8 @@
 package pkgController;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTextField;
@@ -99,9 +102,11 @@ public class Controller_EmailSpammerMain
 		{
 			if (event.getSource().equals(mntmSettings))
 			{
+				Locale locale = db.getLanguage().getLocale();
+				ResourceBundle bundle = ResourceBundle.getBundle("pkgMain/ressources/strings_Settings", locale);
 				Stage st = new Stage();
 				AnchorPane root = (AnchorPane) FXMLLoader
-						.load(getClass().getResource("/pkgMain/ressources/Settings.fxml"));
+						.load(getClass().getResource("/pkgMain/ressources/Settings.fxml"),bundle);
 				Scene scene = new Scene(root);
 				if (db.isDarkMode())
 				{
@@ -110,6 +115,7 @@ public class Controller_EmailSpammerMain
 				{
 					scene.getStylesheets().add("pkgMain/ressources/lightmode.css");
 				}
+				Controller_Settings.mainStage= (Stage) btnExit.getScene().getWindow();
 				st.initOwner(btnExit.getScene().getWindow());
 				st.initStyle(StageStyle.UTILITY);
 				st.initModality(Modality.APPLICATION_MODAL);

@@ -28,16 +28,16 @@ public class ExceptionHandler implements IStaticStrings
 	public static void hanldeUnexpectedException(Exception ex)
 	{
 		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error");
-		alert.setHeaderText("And unexpected error occured");
-		alert.setContentText(ex.getClass() + ": " + ex.getMessage());
+		alert.setTitle(Messages.getString("ExceptionHandler.UnexpectedException.Title")); //$NON-NLS-1$
+		alert.setHeaderText(Messages.getString("ExceptionHandler.UnexpectedException.Header")); //$NON-NLS-1$
+		alert.setContentText(ex.getClass() + ": " + ex.getMessage()); //$NON-NLS-1$
 		// Create expandable Exception.
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 		ex.printStackTrace(pw);
 		String exceptionText = sw.toString();
 
-		Label label = new Label("The exception stacktrace was:");
+		Label label = new Label(Messages.getString("ExceptionHandler.UnexpectedException.Stacktrace")); //$NON-NLS-1$
 
 		TextArea textArea = new TextArea(exceptionText);
 		textArea.setEditable(false);
@@ -65,7 +65,7 @@ public class ExceptionHandler implements IStaticStrings
 	public static void hanldeExpectedException(String title, Exception ex)
 	{
 		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error");
+		alert.setTitle(Messages.getString("ExceptionHandler.ExpectedException.Title")); //$NON-NLS-1$
 		alert.setHeaderText(title);
 		alert.setContentText(ex.getMessage());
 		// Create expandable Exception.
@@ -74,7 +74,7 @@ public class ExceptionHandler implements IStaticStrings
 		ex.printStackTrace(pw);
 		String exceptionText = sw.toString();
 
-		Label label = new Label("The exception stacktrace was:");
+		Label label = new Label(Messages.getString("ExceptionHandler.ExpectedException.Stacktrace")); //$NON-NLS-1$
 
 		TextArea textArea = new TextArea(exceptionText);
 		textArea.setEditable(false);

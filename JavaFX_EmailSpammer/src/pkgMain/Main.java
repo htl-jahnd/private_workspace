@@ -1,5 +1,8 @@
 package pkgMain;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -25,36 +28,41 @@ import javafx.fxml.FXMLLoader;
 public class Main extends Application
 {
 
-	// TODO multi language support, send emails with task -> ui more responsible,
-	// about screen, progress bar for sending, add icons for mail providers
+	// TODO multi language support, 
+	// 	send emails with task -> ui more responsible,
+	// 	progress bar for sending
 
 	@Override
 	public void start(Stage primaryStage)
 	{
 		try
 		{
-			AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("ressources/EmailSpammer.fxml"));
-			Scene scene = new Scene(root);
 			Database db = Database.newInstance();
 			try
 			{
 				db.readPreferences();
-				if (db.isDarkMode())
-				{
-					scene.getStylesheets().add("pkgMain/ressources/darkmode.css");
-				} else
-				{
-					scene.getStylesheets().add("pkgMain/ressources/lightmode.css");
-				}
+				
 			} catch (Exception e)
 			{
 				ExceptionHandler.hanldeUnexpectedException(e);
+			}
+			
+			Locale locale = db.getLanguage().getLocale();
+			ResourceBundle bundle = ResourceBundle.getBundle("pkgMain/ressources/strings_EmailSpammer", locale); //$NON-NLS-1$
+			AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("ressources/EmailSpammer.fxml"), bundle); //$NON-NLS-1$
+			Scene scene = new Scene(root);
+			if (db.isDarkMode())
+			{
+				scene.getStylesheets().add("pkgMain/ressources/darkmode.css"); //$NON-NLS-1$
+			} else
+			{
+				scene.getStylesheets().add("pkgMain/ressources/lightmode.css"); //$NON-NLS-1$
 			}
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e)
 		{
-			ExceptionHandler.hanldeExpectedException("Something went wrong during lauch, oops!", e);
+			ExceptionHandler.hanldeExpectedException(Messages.getString("Main.LaunchExceptionText"), e); //$NON-NLS-1$
 		}
 
 	}
