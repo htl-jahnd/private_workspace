@@ -1,4 +1,4 @@
-package pkgMain;
+package pkgController;
 
 public class Designer_Controller {
 	
