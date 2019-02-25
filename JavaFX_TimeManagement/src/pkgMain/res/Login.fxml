@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="420.0" prefWidth="618.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="pkgController.Login_Controller">
+   <children>
+      <JFXTextField fx:id="txtUsername" focusColor="#82e0aa" layoutX="370.0" layoutY="116.0" prefHeight="27.0" prefWidth="177.0" promptText="Username" />
+      <JFXPasswordField fx:id="pwdPassword" focusColor="#82e0aa" layoutX="370.0" layoutY="210.0" prefHeight="27.0" prefWidth="177.0" promptText="Password" />
+      <AnchorPane prefHeight="420.0" prefWidth="305.0" style="-fx-background-color: #82E0AA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="238.0" fitWidth="258.0" layoutX="34.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="91.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="91.0">
+               <image>
+                  <Image url="@icon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <JFXButton fx:id="btnLogin" defaultButton="true" layoutX="495.0" layoutY="325.0" onAction="#onSelectButton" prefHeight="27.0" prefWidth="77.0" style="-fx-background-color: #82E0AA;" text="Login" />
+      <JFXButton fx:id="btnExit" cancelButton="true" layoutX="360.0" layoutY="325.0" onAction="#onSelectButton" prefHeight="27.0" prefWidth="77.0" style="-fx-background-color: #EC7063;" text="Exit" />
+   </children>
+</AnchorPane>

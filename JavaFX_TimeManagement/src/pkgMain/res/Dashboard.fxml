@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="355.0" prefWidth="451.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="pkgController.Dashboard_Controller">
+   <children>
+      <MenuBar layoutX="-7.0" layoutY="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Statistics">
+            <items>
+              <MenuItem fx:id="mntmShowStatistics" mnemonicParsing="false" onAction="#onSelectMenu" text="Show Statistics" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Previuos entries">
+            <items>
+              <MenuItem fx:id="mntmShowAllEntries" mnemonicParsing="false" onAction="#onSelectMenu" text="Show all entries" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <JFXButton fx:id="btnStartStop" defaultButton="true" layoutX="275.0" layoutY="314.0" onAction="#onSelectButton" prefHeight="27.0" prefWidth="147.0" style="-fx-background-color: lightgreen;" text="Start" />
+      <JFXComboBox fx:id="cmbxActivity" layoutX="35.0" layoutY="54.0" prefHeight="27.0" prefWidth="195.0" promptText="Activity" />
+      <Label fx:id="lblTimer" alignment="CENTER" layoutX="356.0" layoutY="162.0" prefHeight="31.0" prefWidth="84.0" text="00:00">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <JFXButton cancelButton="true" layoutX="5.0" layoutY="314.0" prefHeight="27.0" prefWidth="147.0" style="-fx-background-color: darkred;" text="Exit" textFill="WHITE" />
+      <JFXTextArea fx:id="txtMessage" layoutX="40.0" layoutY="102.0" prefHeight="160.0" prefWidth="307.0" promptText="Message" wrapText="true" />
+   </children>
+</AnchorPane>
