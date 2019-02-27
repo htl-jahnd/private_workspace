@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -17,13 +19,23 @@ public class Database
 	private static Database INSTANCE;
 	private static Connection conn = null;
 	private static boolean isConnectionSet = false;
-	private static String connectionString = "212.152.179.117"; 
+	private static String connectionString = "212.152.179.117";// "192.168.128.152";
 	private static final String DB_USER = "d4b12";
 	private static final String DB_PWD = "d4b";
 	private static User currentUser;
+	private ArrayList<Activity> activities;
+	private ArrayList<Entry> ownEntries;
+	private ArrayList<Entry> allEntries;
+	private ArrayList<Entry> userEntries;
+	private ArrayList<User> users;
 
 	private Database()
 	{
+		activities = new ArrayList<Activity>();
+		ownEntries = new ArrayList<Entry>();
+		userEntries = new ArrayList<>();
+		allEntries = new ArrayList<>();
+		users = new ArrayList<>();
 	}
 
 	public static Database newInstance() throws Exception
@@ -35,9 +47,29 @@ public class Database
 		}
 		return INSTANCE;
 	}
-	
-	
-	public void createNewUser(User user) throws NoSuchAlgorithmException, SQLException {
+
+	public Collection<Activity> getAllActivities()
+	{
+		return activities;
+	}
+
+	public Collection<Entry> getOwnEntries()
+	{
+		return ownEntries;
+	}
+
+	public Collection<Entry> getAllEntries()
+	{
+		return allEntries;
+	}
+
+	public Collection<Entry> getUserEntries()
+	{
+		return userEntries;
+	}
+
+	public void createNewUser(User user) throws NoSuchAlgorithmException, SQLException
+	{
 		String salt = PasswordUtils.generateSaltAsString(PasswordUtils.SALT_LENGTH);
 		String hashedPassword = PasswordUtils.getSHA512Hash(user.getPassword(), salt);
 
@@ -49,7 +81,7 @@ public class Database
 		stmt2.setBoolean(4, user.isAdmin());
 		stmt2.executeUpdate();
 	}
-	
+
 	private static void createConnection() throws Exception
 	{
 		if (conn == null)
@@ -64,7 +96,7 @@ public class Database
 		conn.setAutoCommit(true);
 		isConnectionSet = true;
 	}
-	
+
 	public void login(String username, char[] pwd) throws NoSuchAlgorithmException, UserException, SQLException
 	{
 		String stmtString = "SELECT username, password, isAdmin FROM users WHERE username LIKE ?";
@@ -72,12 +104,12 @@ public class Database
 		PreparedStatement stmt = conn.prepareStatement(stmtString);
 		stmt.setString(1, username);
 		ResultSet rs = stmt.executeQuery();
-		boolean isAdmin =false;
+		boolean isAdmin = false;
 		if (rs.next())
 		{
 			isAdmin = rs.getBoolean(3);
-		}
-		else throw new UserException("Invalid Username or Password");
+		} else
+			throw new UserException("Invalid Username or Password");
 
 		String salt = null;
 		String stmtString2 = "SELECT salt FROM users WHERE username LIKE ?";
@@ -89,7 +121,189 @@ public class Database
 			salt = rs.getString(1);
 		}
 		String hashed = PasswordUtils.getSHA512Hash(new String(pwd), salt);
+		currentUser = new User(username, hashed, salt, isAdmin);
+		if (isAdmin)
+		{
+			allEntries = new ArrayList<>();
+			userEntries = new ArrayList<>();
+		}
+	}
 
-		currentUser =new User(username, hashed, salt, isAdmin);
+	public void selectAllActivities() throws SQLException
+	{
+		String stmtString = "SELECT id, name from activities";
+		PreparedStatement stmt = conn.prepareStatement(stmtString);
+		ResultSet rs = stmt.executeQuery();
+		activities.clear();
+		while (rs.next())
+		{
+			activities.add(new Activity(rs.getInt(1), rs.getString(2)));
+		}
+
+	}
+
+	// ***********************
+	// CRUD for activities
+	// ***********************
+
+	public void addActivity(String name) throws SQLException
+	{
+		String insert = "insert into activities values(seqActivity.nextval, ?)";
+		PreparedStatement stmt = conn.prepareStatement(insert);
+		stmt.setString(1, name);
+		stmt.executeUpdate();
+	}
+
+	public void updateActivity(Activity act) throws SQLException
+	{
+		String update = "UPDATE activites SET name=? WHERE id =?";
+		PreparedStatement stmt = conn.prepareStatement(update);
+		stmt.setString(1, act.getName());
+		stmt.setInt(2, act.getActivityId());
+		int i = stmt.executeUpdate();
+		if (i < 1)
+			throw new SQLException("Activity not found");
+	}
+
+	public void deleteActivity(Activity act) throws SQLException
+	{
+		String delete = "Delete from activities where id =?";
+		PreparedStatement stmt = conn.prepareStatement(delete);
+		stmt.setInt(1, act.getActivityId());
+		int i = stmt.executeUpdate();
+		if (i < 1)
+			throw new SQLException("Activity not found");
+	}
+
+	// ***********************
+	// CRUD for entries
+	// ***********************
+	public void addEntry(Entry entr) throws SQLException
+	{
+		String insert = "insert into entries values(seqEntry.nextval, ?,?,?,?,?,?)";
+		PreparedStatement stmt = conn.prepareStatement(insert);
+		stmt.setInt(1, entr.getActivity().getActivityId());
+		stmt.setString(2, entr.getTitle());
+		stmt.setString(3, entr.getMessage());
+		stmt.setString(4, entr.getUser().getUsername());
+		stmt.setTimestamp(5, entr.getTimestampStart());
+		stmt.setTimestamp(6, entr.getTimestampEnd());
+		stmt.executeUpdate();
+	}
+
+	public void updateEntry(Entry entr) throws SQLException
+	{
+		String update = "update entries set activity_id =?, title = ?, message=?, user_id=?, start_time=? end_time=? WHERE id = ?";
+		PreparedStatement stmt = conn.prepareStatement(update);
+		stmt.setInt(1, entr.getActivity().getActivityId());
+		stmt.setString(2, entr.getTitle());
+		stmt.setString(3, entr.getMessage());
+		stmt.setString(4, entr.getUser().getUsername());
+		stmt.setTimestamp(5, entr.getTimestampStart());
+		stmt.setTimestamp(6, entr.getTimestampEnd());
+		stmt.setInt(7, entr.getEntryId());
+		int i = stmt.executeUpdate();
+		if (i < 1)
+			throw new SQLException("Entry not found");
+	}
+
+	public void deleteEntry(Entry entr) throws SQLException
+	{
+		String delete = "DELETE FROM entries WHERE id =?";
+		PreparedStatement stmt = conn.prepareStatement(delete);
+		stmt.setInt(1, entr.getEntryId());
+		int i = stmt.executeUpdate();
+		if (i < 1)
+			throw new SQLException("Entry not found");
+	}
+
+	// ***********************
+	// SELECTS for Entries
+	// ***********************
+
+	public void selectUserEntries(User usr) throws Exception
+	{
+		if (!currentUser.isAdmin())
+			throw new Exception("User is no admin");
+		ArrayList<Entry> tmp = new ArrayList<Entry>();
+		String select = "SELECT id, activity_id,message, start_time, end_time, title FROM entries WHERE user_id = ?";
+		PreparedStatement stmt = conn.prepareStatement(select);
+		stmt.setString(1, usr.getUsername());
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next())
+		{
+			int actId = rs.getInt(2);
+			Activity act = activities.stream().filter(o -> o.getActivityId() == actId).findAny().orElse(null);
+			if (act != null)
+				tmp.add(new Entry(rs.getInt(1), act, usr, rs.getTimestamp(4), rs.getTimestamp(5), rs.getString("title"),
+						rs.getString(3)));
+		}
+		userEntries.clear();
+		userEntries.addAll(tmp);
+	}
+
+	public void selectOwnEntries() throws Exception
+	{
+		ArrayList<Entry> tmp = new ArrayList<Entry>();
+		String select = "SELECT id, activity_id,message, start_time, end_time, title FROM entries WHERE user_id = ?";
+		PreparedStatement stmt = conn.prepareStatement(select);
+		stmt.setString(1, currentUser.getUsername());
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next())
+		{
+			int actId = rs.getInt(2);
+			Activity act = activities.stream().filter(o -> o.getActivityId() == actId).findAny().orElse(null);
+			if (act != null)
+				tmp.add(new Entry(rs.getInt(1), act, currentUser, rs.getTimestamp(4), rs.getTimestamp(5),
+						rs.getString("title"), rs.getString(3)));
+		}
+		ownEntries.clear();
+		ownEntries.addAll(tmp);
+	}
+
+	public void selectAllEntries() throws Exception
+	{
+		if (!currentUser.isAdmin())
+			throw new Exception("User is no admin");
+		ArrayList<Entry> tmp = new ArrayList<Entry>();
+		String select = "SELECT id, activity_id,message, start_time, end_time, title, username, password, salt, isadmin FROM entries INNER JOIN users ON entries.user_id = users.username";
+		PreparedStatement stmt = conn.prepareStatement(select);
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next())
+		{
+			User usr = new User(rs.getString("username"), rs.getString("password"), rs.getString("salt"),
+					rs.getBoolean("isAdmin"));
+			int actId = rs.getInt(2);
+			Activity act = activities.stream().filter(o -> o.getActivityId() == actId).findAny().orElse(null);
+			if (act != null)
+				tmp.add(new Entry(rs.getInt(1), act, usr, rs.getTimestamp(4), rs.getTimestamp(5), rs.getString("title"),
+						rs.getString(3)));
+		}
+		allEntries.clear();
+		allEntries.addAll(tmp);
+	}
+
+	public void selectAllUsers() throws SQLException
+	{
+		ArrayList<User> tmp = new ArrayList<>();
+		String select = "SELECT username, password, salt, isadmin from users";
+		PreparedStatement stmt = conn.prepareStatement(select);
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next())
+		{
+			tmp.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBoolean(4)));
+		}
+		users.clear();
+		users.addAll(tmp);
+	}
+
+	public User getCurrentUser()
+	{
+		return currentUser;
+	}
+
+	public Collection<User> getAllUsers()
+	{
+		return users;
 	}
 }

@@ -27,27 +27,8 @@ public class Main extends Application {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchAlgorithmException, SQLException, Exception {
+//		Database.newInstance().createNewUser(new User("admin", "admin", "", true));
 		launch(args);
-//		Activity act = new Activity("Testing", 0);
-//    	System.out.println(act.toString());
-		
-		
-//		try
-//		{
-//			Database.newInstance().createNewUser(new User("admin", "admin", "", true));
-//		} catch (NoSuchAlgorithmException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (SQLException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (Exception e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 }
