@@ -1,8 +1,8 @@
 package pkgData
 
 data class Activity(
-	val activityId: Int,
-	val name: String
+	var activityId: Int,
+	var name: String
 ) {
 	override fun toString(): String = name;
 }

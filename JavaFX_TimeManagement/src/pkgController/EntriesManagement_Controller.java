@@ -2,83 +2,69 @@
 package pkgController;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Calendar;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXTimePicker;
-import com.sun.xml.internal.ws.handler.HandlerException;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import jdk.internal.org.objectweb.asm.Handle;
+import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import pkgData.Activity;
 import pkgData.Database;
 import pkgData.Entry;
 import pkgData.User;
 import pkgMisc.ExceptionHandler;
+import pkgMisc.IStaticStrings;
+import pkgMisc.TextAreaTableCell;
+import pkgMisc.TimePickerTableCell;
+import pkgMisc.ActivityComboBoxEditingCell;
+import pkgMisc.DateEditingCell;
 
-public class EntriesManagement_Controller
+public class EntriesManagement_Controller implements IStaticStrings
 {
 
 	@FXML
-	private JFXListView<Entry> lstViewEntries;
-
-	@FXML
-	private JFXComboBox<User> cmbxUser;
-
-	@FXML
-	private JFXTextArea txtEntryMessage;
-
-	@FXML
-	private JFXTextField txtEntryTitle;
-
-	@FXML
-	private JFXComboBox<Activity> cmbxEntryActivity;
-
-	@FXML
-	private JFXTimePicker timeEntryStartTime;
-
-	@FXML
-	private JFXTimePicker timeEntryEndTime;
-
-	@FXML
-	private JFXDatePicker dateEntryDate;
-
-	@FXML
-	private JFXButton btnEntrySave;
-
-	@FXML
-	private JFXButton btnEntryCancel;
-
-	@FXML
-	private JFXCheckBox chckbxAllUsersEntries;
+	private StackPane pane;
 
 	@FXML
 	private HBox boxUserSelection;
 
 	@FXML
-	private HBox hboxEditDelete;
+	private JFXComboBox<User> cmbxUser;
 
 	@FXML
-	private JFXButton btnDeleteEntry;
+	private JFXButton btnSave;
 
 	@FXML
-	private JFXButton btnEditEntry;
+	private JFXButton btnCancel;
+
+	@FXML
+	private JFXCheckBox chckbxAllUsersEntries;
 
 	@FXML
 	private HBox hboxSaveCancel;
@@ -89,31 +75,160 @@ public class EntriesManagement_Controller
 	@FXML
 	private JFXButton btnSaveEntry;
 
+	@FXML
+	private TableView<Entry> tableEntries;
+
+	@FXML
+	private TableColumn<Entry, User> colUser;
+
+	@FXML
+	private TableColumn<Entry, Activity> colActivity;
+
+	@FXML
+	private TableColumn<Entry, String> colTitle;
+
+	@FXML
+	private TableColumn<Entry, String> colMessage;
+
+	@FXML
+	private TableColumn<Entry, LocalDate> colDate;
+
+	@FXML
+	private TableColumn<Entry, LocalTime> colStartTime;
+
+	@FXML
+	private TableColumn<Entry, LocalTime> colEndTime;
+
 	public static Stage mainStage;
 	private Database db;
 	private ObservableList<User> listUsers;
 	private ObservableList<Activity> listActivities;
 	private ObservableList<Entry> listEntries;
-	private Entry currentEntry;
+	private ArrayList<Entry> entriesToDelete;
 
 	@FXML
 	void initialize() throws Exception
 	{
-		db = Database.newInstance();
-		listUsers = FXCollections.observableArrayList();
-		listActivities = FXCollections.observableArrayList();
-		listEntries = FXCollections.observableArrayList();
+		try
+		{
+			db = Database.newInstance();
+			db.setAutoCommit(false);
+			listUsers = FXCollections.observableArrayList();
+			listActivities = FXCollections.observableArrayList();
+			listEntries = FXCollections.observableArrayList();
+			entriesToDelete = new ArrayList<Entry>();
 
-		cmbxEntryActivity.setItems(listActivities);
-		cmbxUser.setItems(listUsers);
-		lstViewEntries.setItems(listEntries);
+			cmbxUser.setItems(listUsers);
+			tableEntries.setItems(listEntries);
 
-		db.selectAllActivities();
-		listActivities.setAll(db.getAllActivities());
-		db.selectAllUsers();
-		listUsers.setAll(db.getAllUsers());
-		db.selectAllEntries();
-		listEntries.setAll(db.getAllEntries());
+			db.selectAllActivities();
+			listActivities.setAll(db.getAllActivities());
+			db.selectAllUsers();
+			listUsers.setAll(db.getAllUsers());
+			db.selectAllEntries();
+			listEntries.setAll(db.getAllEntries());
+
+			colActivity.setCellValueFactory(new PropertyValueFactory<Entry, Activity>("activity"));
+			colActivity.setCellFactory(
+					(TableColumn<Entry, Activity> param) -> new ActivityComboBoxEditingCell(listActivities));
+			colMessage.setCellValueFactory(new PropertyValueFactory<Entry, String>("message"));
+			colMessage.setCellFactory(TextAreaTableCell.forTableColumn());
+
+			colTitle.setCellValueFactory(new PropertyValueFactory<Entry, String>("title"));
+			colTitle.setCellFactory(TextFieldTableCell.forTableColumn());
+
+			colUser.setCellValueFactory(new PropertyValueFactory<Entry, User>("user"));
+
+			colDate.setCellValueFactory(new PropertyValueFactory<Entry, LocalDate>("date"));
+			colDate.setCellFactory((TableColumn<Entry, LocalDate> param) -> new DateEditingCell());
+
+			colEndTime.setCellValueFactory(new PropertyValueFactory<Entry, LocalTime>("timeEnd"));
+			colEndTime.setCellFactory(TimePickerTableCell.forTableColumn());
+			colStartTime.setCellValueFactory(new PropertyValueFactory<Entry, LocalTime>("timeStart"));
+			colStartTime.setCellFactory(TimePickerTableCell.forTableColumn());
+			
+			
+			tableEntries.setRowFactory(
+				    new Callback<TableView<Entry>, TableRow<Entry>>() {
+				        @Override
+				        public TableRow<Entry> call(TableView<Entry> tableView) {
+				            final TableRow<Entry> row = new TableRow<>();
+				            final ContextMenu rowMenu = new ContextMenu();
+				            MenuItem removeItem = new MenuItem("Delete");
+				            removeItem.setOnAction(new EventHandler<ActionEvent>() {
+
+				                @Override
+				                public void handle(ActionEvent event) {
+				                   entriesToDelete.add(row.getItem());
+				                   listEntries.remove(row.getItem());
+				                }
+				            });
+				            rowMenu.getItems().addAll(removeItem);
+
+				            // only display context menu for non-null items:
+				            row.contextMenuProperty().bind(
+				              Bindings.when(Bindings.isNotNull(row.itemProperty()))
+				              .then(rowMenu)
+				              .otherwise((ContextMenu)null));
+				            return row;
+				    }
+				});
+			
+
+			mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent we)
+				{
+					try
+					{
+						db.setAutoCommit(true);
+					} catch (SQLException e)
+					{
+						handleException(e);
+						mainStage.close();
+					}
+				}
+			});
+		} catch (Exception e)
+		{
+			handleException(e);
+		}
+	}
+
+	@FXML
+	void onEditColActivityFinished(CellEditEvent<Entry, Activity> event)
+	{
+		(event.getTableView().getItems().get(event.getTablePosition().getRow())).setActivity(event.getNewValue());
+	}
+
+	@FXML
+	void onEditColDateFinished(CellEditEvent<Entry, LocalDate> event)
+	{
+		(event.getTableView().getItems().get(event.getTablePosition().getRow())).setDate(event.getNewValue());
+	}
+
+	@FXML
+	void onEditColEndTimeFinished(CellEditEvent<Entry, LocalTime> event)
+	{
+		(event.getTableView().getItems().get(event.getTablePosition().getRow())).setTimeEnd(event.getNewValue());
+	}
+
+	@FXML
+	void onEditColMessageFinished(CellEditEvent<Entry, String> event)
+	{
+		(event.getTableView().getItems().get(event.getTablePosition().getRow())).setMessage(event.getNewValue());
+	}
+
+	@FXML
+	void onEditColStartTimeFinished(CellEditEvent<Entry, LocalTime> event)
+	{
+		(event.getTableView().getItems().get(event.getTablePosition().getRow())).setTimeStart(event.getNewValue());
+	}
+
+	@FXML
+	void onEditColTitleFinished(CellEditEvent<Entry, String> event)
+	{
+		(event.getTableView().getItems().get(event.getTablePosition().getRow())).setTitle(event.getNewValue());
 	}
 
 	@FXML
@@ -121,43 +236,17 @@ public class EntriesManagement_Controller
 	{
 		try
 		{
-			if (event.getSource().equals(btnCancelEntry))
+			if (event.getSource().equals(btnCancel))
 			{
-				hboxSaveCancel.setVisible(false);
-				hboxEditDelete.setVisible(true);
-				setTextFieldsDisable(false);
-			} else if (event.getSource().equals(btnSaveEntry))
+				showConfirmCancelDialog(); // TODO
+				mainStage.close();
+			} else if (event.getSource().equals(btnSave))
 			{
-				hboxSaveCancel.setVisible(false);
-				hboxEditDelete.setVisible(true);
-				setTextFieldsDisable(false);
-
-				LocalDateTime dtEnd = timeEntryEndTime.getValue().atDate(dateEntryDate.getValue());
-				Timestamp tmpEnd = Timestamp.valueOf(dtEnd);
-
-				LocalDateTime dtStart = timeEntryStartTime.getValue().atDate(dateEntryDate.getValue());
-				Timestamp tmpStart = Timestamp.valueOf(dtStart);
-
-				currentEntry.setActivity(cmbxEntryActivity.getValue());
-				currentEntry.setMessage(txtEntryMessage.getText());
-				currentEntry.setTimestampEnd(tmpEnd);
-				currentEntry.setTimestampStart(tmpStart);
-				currentEntry.setTitle(txtEntryTitle.getText());
-
-				db.updateEntry(currentEntry);
-				updateListEntries();
-			} else if (event.getSource().equals(btnDeleteEntry))
-			{
-				clearTextFields();
-				int pos = listEntries.indexOf(currentEntry);
+				db.updateListEntries(listEntries);
+				db.deleteListEntries(entriesToDelete);
+				db.commit();
 				
-				db.deleteEntry(currentEntry);
-				updateListEntries();
-			} else if (event.getSource().equals(btnEditEntry))
-			{
-				hboxSaveCancel.setVisible(true);
-				hboxEditDelete.setVisible(false);
-				setTextFieldsDisable(true);
+				mainStage.close();
 			}
 		} catch (Exception e)
 		{
@@ -166,38 +255,23 @@ public class EntriesManagement_Controller
 
 	}
 
+	private void showConfirmCancelDialog()
+	{
+		// TODO
+	}
+
 	private void updateListEntries() throws Exception
 	{
-		if (chckbxAllUsersEntries.isSelected()) {
+		if (chckbxAllUsersEntries.isSelected())
+		{
 			db.selectAllEntries();
 			listEntries.setAll(db.getAllEntries());
-		}
-			
-		else {
+		} else
+		{
 			db.selectAllUsers();
 			listEntries.setAll(db.getUserEntries());
 		}
-			
-	}
 
-	private void clearTextFields()
-	{
-		txtEntryMessage.clear();
-		txtEntryTitle.clear();
-		cmbxEntryActivity.getSelectionModel().clearSelection();
-		timeEntryEndTime.setValue(LocalTime.of(8, 00));
-		timeEntryStartTime.setValue(LocalTime.of(13, 00));
-		dateEntryDate.setValue(LocalDate.now());
-	}
-
-	private void setTextFieldsDisable(boolean b)
-	{
-		txtEntryMessage.setEditable(b);
-		txtEntryTitle.setEditable(b);
-		cmbxEntryActivity.setDisable(b);
-		timeEntryEndTime.setEditable(b);
-		timeEntryStartTime.setEditable(b);
-		dateEntryDate.setEditable(b);
 	}
 
 	@FXML
@@ -231,26 +305,6 @@ public class EntriesManagement_Controller
 				listEntries.clear();
 			}
 		}
-	}
-
-	@FXML
-	void onSelectListUsers(MouseEvent event)
-	{
-		if (lstViewEntries.getSelectionModel().getSelectedItem() != null)
-		{
-			doFillTextFields(lstViewEntries.getSelectionModel().getSelectedItem());
-			currentEntry = lstViewEntries.getSelectionModel().getSelectedItem();
-		}
-	}
-
-	private void doFillTextFields(Entry etr)
-	{
-		txtEntryMessage.setText(etr.getMessage());
-		dateEntryDate.setValue(etr.getTimestampStart().toLocalDateTime().toLocalDate());
-		timeEntryEndTime.setValue(etr.getTimestampEnd().toLocalDateTime().toLocalTime());
-		timeEntryStartTime.setValue(etr.getTimestampStart().toLocalDateTime().toLocalTime());
-		cmbxEntryActivity.getSelectionModel().select(etr.getActivity());
-		txtEntryTitle.setText(etr.getTitle());
 	}
 
 	private void handleException(Exception e)

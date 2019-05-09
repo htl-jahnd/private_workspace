@@ -56,7 +56,7 @@ public class TimerWorker extends TimerTask
 				Thread.sleep(1000);
 			} catch (InterruptedException e)
 			{
-				Platform.runLater(() -> controller.hanldeException(e));
+				Platform.runLater(() -> controller.handleException(e));
 			}
 			if (isEnd)
 			{

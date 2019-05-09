@@ -6,11 +6,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
-
+import javafx.collections.ObservableList;
 import pkgExceptions.UserException;
 import pkgMisc.PasswordUtils;
 
@@ -19,7 +21,7 @@ public class Database
 	private static Database INSTANCE;
 	private static Connection conn = null;
 	private static boolean isConnectionSet = false;
-	private static String connectionString = "212.152.179.117";// "192.168.128.152";
+	private static String connectionString ="212.152.179.117";// "192.168.128.152" ;
 	private static final String DB_USER = "d4b12";
 	private static final String DB_PWD = "d4b";
 	private static User currentUser;
@@ -68,17 +70,17 @@ public class Database
 		return userEntries;
 	}
 
-	public void createNewUser(User user) throws NoSuchAlgorithmException, SQLException
+	public void createNewUser(String usrname, char[] pwd, boolean isAdmin) throws NoSuchAlgorithmException, SQLException
 	{
 		String salt = PasswordUtils.generateSaltAsString(PasswordUtils.SALT_LENGTH);
-		String hashedPassword = PasswordUtils.getSHA512Hash(user.getPassword(), salt);
-
+		String hashedPassword = PasswordUtils.getSHA512Hash(new String(pwd), salt);
+		User usr = new User(usrname, hashedPassword, salt, isAdmin);
 		String stmtString2 = "INSERT INTO users VALUES(?,?,?,?)";
 		PreparedStatement stmt2 = conn.prepareStatement(stmtString2);
-		stmt2.setString(1, user.getUsername());
-		stmt2.setString(2, hashedPassword);
-		stmt2.setString(3, salt);
-		stmt2.setBoolean(4, user.isAdmin());
+		stmt2.setString(1, usr.getUsername());
+		stmt2.setString(2, usr.getPassword());
+		stmt2.setString(3, usr.getSalt());
+		stmt2.setBoolean(4, usr.isAdmin());
 		stmt2.executeUpdate();
 	}
 
@@ -146,17 +148,26 @@ public class Database
 	// CRUD for activities
 	// ***********************
 
-	public void addActivity(String name) throws SQLException
+	public Activity addActivity(String name) throws SQLException
 	{
-		String insert = "insert into activities values(seqActivity.nextval, ?)";
-		PreparedStatement stmt = conn.prepareStatement(insert);
-		stmt.setString(1, name);
+		int id = -1;
+		String select = "SELECT seqActivity.nextval from dual";
+		PreparedStatement stmt = conn.prepareStatement(select);
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next())
+			id = rs.getInt(1);
+
+		String insert = "insert into activities values(?, ?)";
+		stmt = conn.prepareStatement(insert);
+		stmt.setInt(1, id);
+		stmt.setString(2, name);
 		stmt.executeUpdate();
+		return new Activity(id, name);
 	}
 
 	public void updateActivity(Activity act) throws SQLException
 	{
-		String update = "UPDATE activites SET name=? WHERE id =?";
+		String update = "UPDATE activities SET name=? WHERE id =?";
 		PreparedStatement stmt = conn.prepareStatement(update);
 		stmt.setString(1, act.getName());
 		stmt.setInt(2, act.getActivityId());
@@ -180,31 +191,78 @@ public class Database
 	// ***********************
 	public void addEntry(Entry entr) throws SQLException
 	{
+		LocalDateTime ldts = LocalDateTime.of(entr.getDate(), entr.getTimeStart());
+		Timestamp st = Timestamp.valueOf(ldts);
+
+		LocalDateTime ldte = LocalDateTime.of(entr.getDate(), entr.getTimeEnd());
+		Timestamp et = Timestamp.valueOf(ldte);
+
 		String insert = "insert into entries values(seqEntry.nextval, ?,?,?,?,?,?)";
 		PreparedStatement stmt = conn.prepareStatement(insert);
 		stmt.setInt(1, entr.getActivity().getActivityId());
 		stmt.setString(2, entr.getTitle());
 		stmt.setString(3, entr.getMessage());
 		stmt.setString(4, entr.getUser().getUsername());
-		stmt.setTimestamp(5, entr.getTimestampStart());
-		stmt.setTimestamp(6, entr.getTimestampEnd());
+		stmt.setTimestamp(5, st);
+		stmt.setTimestamp(6, et);
 		stmt.executeUpdate();
+	}
+
+	public void updateListEntries(List<Entry> entrs) throws SQLException
+	{
+		String update = "update entries set activity_id =?, title = ?, message=?, user_id=?, start_time=?, end_time=? WHERE id = ?";
+		PreparedStatement stmt = conn.prepareStatement(update);
+		for (Entry entr : entrs)
+		{
+			LocalDateTime ldts = LocalDateTime.of(entr.getDate(), entr.getTimeStart());
+			Timestamp st = Timestamp.valueOf(ldts);
+
+			LocalDateTime ldte = LocalDateTime.of(entr.getDate(), entr.getTimeEnd());
+			Timestamp et = Timestamp.valueOf(ldte);
+			stmt.setInt(1, entr.getActivity().getActivityId());
+			stmt.setString(2, entr.getTitle());
+			stmt.setString(3, entr.getMessage());
+			stmt.setString(4, entr.getUser().getUsername());
+			stmt.setTimestamp(5, st);
+			stmt.setTimestamp(6, et);
+			stmt.setInt(7, entr.getEntryId());
+			stmt.addBatch();
+		}
+		stmt.executeBatch();
 	}
 
 	public void updateEntry(Entry entr) throws SQLException
 	{
-		String update = "update entries set activity_id =?, title = ?, message=?, user_id=?, start_time=? end_time=? WHERE id = ?";
+
+		LocalDateTime ldts = LocalDateTime.of(entr.getDate(), entr.getTimeStart());
+		Timestamp st = Timestamp.valueOf(ldts);
+
+		LocalDateTime ldte = LocalDateTime.of(entr.getDate(), entr.getTimeEnd());
+		Timestamp et = Timestamp.valueOf(ldte);
+		String update = "update entries set activity_id =?, title = ?, message=?, user_id=?, start_time=?, end_time=? WHERE id = ?";
 		PreparedStatement stmt = conn.prepareStatement(update);
 		stmt.setInt(1, entr.getActivity().getActivityId());
 		stmt.setString(2, entr.getTitle());
 		stmt.setString(3, entr.getMessage());
 		stmt.setString(4, entr.getUser().getUsername());
-		stmt.setTimestamp(5, entr.getTimestampStart());
-		stmt.setTimestamp(6, entr.getTimestampEnd());
+		stmt.setTimestamp(5, st);
+		stmt.setTimestamp(6, et);
 		stmt.setInt(7, entr.getEntryId());
 		int i = stmt.executeUpdate();
 		if (i < 1)
 			throw new SQLException("Entry not found");
+	}
+
+	public void deleteListEntries(List<Entry> entriesToDelete) throws SQLException
+	{
+		String delete = "DELETE FROM entries WHERE id =?";
+		PreparedStatement stmt = conn.prepareStatement(delete);
+		for (Entry etr : entriesToDelete)
+		{
+			stmt.setInt(1, etr.getEntryId());
+			stmt.addBatch();
+		}
+		stmt.executeBatch();
 	}
 
 	public void deleteEntry(Entry entr) throws SQLException
@@ -235,8 +293,9 @@ public class Database
 			int actId = rs.getInt(2);
 			Activity act = activities.stream().filter(o -> o.getActivityId() == actId).findAny().orElse(null);
 			if (act != null)
-				tmp.add(new Entry(rs.getInt(1), act, usr, rs.getTimestamp(4), rs.getTimestamp(5), rs.getString("title"),
-						rs.getString(3)));
+				tmp.add(new Entry(rs.getInt(1), act, usr, rs.getTimestamp(4).toLocalDateTime().toLocalDate(),
+						rs.getTimestamp(4).toLocalDateTime().toLocalTime(),
+						rs.getTimestamp(5).toLocalDateTime().toLocalTime(), rs.getString("title"), rs.getString(3)));
 		}
 		userEntries.clear();
 		userEntries.addAll(tmp);
@@ -254,8 +313,9 @@ public class Database
 			int actId = rs.getInt(2);
 			Activity act = activities.stream().filter(o -> o.getActivityId() == actId).findAny().orElse(null);
 			if (act != null)
-				tmp.add(new Entry(rs.getInt(1), act, currentUser, rs.getTimestamp(4), rs.getTimestamp(5),
-						rs.getString("title"), rs.getString(3)));
+				tmp.add(new Entry(rs.getInt(1), act, currentUser, rs.getTimestamp(4).toLocalDateTime().toLocalDate(),
+						rs.getTimestamp(4).toLocalDateTime().toLocalTime(),
+						rs.getTimestamp(5).toLocalDateTime().toLocalTime(), rs.getString("title"), rs.getString(3)));
 		}
 		ownEntries.clear();
 		ownEntries.addAll(tmp);
@@ -276,8 +336,9 @@ public class Database
 			int actId = rs.getInt(2);
 			Activity act = activities.stream().filter(o -> o.getActivityId() == actId).findAny().orElse(null);
 			if (act != null)
-				tmp.add(new Entry(rs.getInt(1), act, usr, rs.getTimestamp(4), rs.getTimestamp(5), rs.getString("title"),
-						rs.getString(3)));
+				tmp.add(new Entry(rs.getInt(1), act, usr, rs.getTimestamp(4).toLocalDateTime().toLocalDate(),
+						rs.getTimestamp(4).toLocalDateTime().toLocalTime(),
+						rs.getTimestamp(5).toLocalDateTime().toLocalTime(), rs.getString("title"), rs.getString(3)));
 		}
 		allEntries.clear();
 		allEntries.addAll(tmp);
@@ -306,4 +367,60 @@ public class Database
 	{
 		return users;
 	}
+
+	public void setAutoCommit(boolean b) throws SQLException
+	{
+		conn.setAutoCommit(b);
+
+	}
+
+	public void commit() throws SQLException
+	{
+		conn.commit();
+	}
+
+	public void rollback() throws SQLException
+	{
+		conn.rollback();
+	}
+
+	public Activity getNewActivity() throws SQLException
+	{
+		Activity ret = null;
+		String select = "SELECT seqActivity.nextval from dual";
+		PreparedStatement stmt = conn.prepareStatement(select);
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next())
+			ret = new Activity(rs.getInt(1), "Activity");
+		return ret;
+	}
+
+	public void updateListUsers(List<User> listUsers) throws SQLException
+	{
+		String update = "update users set isadmin=? WHERE username = ?";
+		PreparedStatement stmt = conn.prepareStatement(update);
+		for (User usr : listUsers)
+		{
+			stmt.setBoolean(1, usr.isAdmin());
+			
+			stmt.setString(2, usr.getUsername());
+			stmt.addBatch();
+		}
+		stmt.executeBatch();
+		
+	}
+
+	public void deleteListUsers(List<User> usersToDelete) throws SQLException
+	{
+		String delete = "DELETE FROM entries WHERE username =?";
+		PreparedStatement stmt = conn.prepareStatement(delete);
+		for (User usr : usersToDelete)
+		{
+			stmt.setString(1,usr.getUsername());
+			stmt.addBatch();
+		}
+		stmt.executeBatch();
+		
+	}
+
 }

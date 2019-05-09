@@ -1,17 +1,18 @@
 package pkgData
 
 import java.time.format.DateTimeFormatter
-import java.time.Instant
-import java.sql.Timestamp
+import java.time.LocalDate
+import java.time.LocalTime
 
 data class Entry(
-	var entryId:Int,
+	var entryId: Int,
 	var activity: Activity,
 	var user: User,
-	var timestampStart: Timestamp,
-	var timestampEnd: Timestamp,
-	var title:String,
-	var message: String = ""
+	var date: LocalDate,
+	var timeStart: LocalTime,
+	var timeEnd: LocalTime,
+	var title: String,
+	var message: String
 ) {
 
 }

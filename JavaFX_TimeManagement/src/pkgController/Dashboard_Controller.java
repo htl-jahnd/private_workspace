@@ -7,15 +7,17 @@ import com.jfoenix.controls.JFXTextArea;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import pkgData.Activity;
 import pkgData.Database;
 import pkgData.Entry;
@@ -42,6 +44,9 @@ public class Dashboard_Controller
 
 	@FXML
 	private JFXTextArea txtMessage;
+
+	@FXML
+	private MenuItem mtnmActivityManagement;
 
 	private Database db;
 	private ObservableList<Activity> listActivities;
@@ -74,10 +79,12 @@ public class Dashboard_Controller
 			{
 				if (!started)
 				{
+					checkInput();
 					started = true;
+
 					btnStartStop.setText("Stop");
 					btnStartStop.setStyle("-fx-background-color:#EC7063");
-					checkInput();
+
 					startTimer();
 				} else
 				{
@@ -86,13 +93,15 @@ public class Dashboard_Controller
 					btnStartStop.setStyle("-fx-background-color:#82E0AA;");
 					stopTimer();
 					Entry entr = new Entry(0, cmbxActivity.getSelectionModel().getSelectedItem(), db.getCurrentUser(),
-							timer.getStartTime(), timer.getEndTime(), "Tests", txtMessage.getText());
+							timer.getStartTime().toLocalDateTime().toLocalDate(),
+							timer.getStartTime().toLocalDateTime().toLocalTime(),
+							timer.getEndTime().toLocalDateTime().toLocalTime(), "Tests", txtMessage.getText());
 					db.addEntry(entr);
 				}
 			}
 		} catch (Exception e)
 		{
-			hanldeException(e);
+			handleException(e);
 		}
 	}
 
@@ -102,7 +111,6 @@ public class Dashboard_Controller
 			throw new Exception("PLease select an Activity");
 		if (txtMessage.getText().trim().isEmpty())
 			throw new Exception("Please enter a message");
-
 	}
 
 	public void setTime(String value)
@@ -133,10 +141,10 @@ public class Dashboard_Controller
 			if (event.getSource().equals(mntmShowAllEntries))
 			{
 				Stage st = new Stage();
-				AnchorPane root = (AnchorPane) FXMLLoader
-						.load(getClass().getResource("/pkgMain/res/EntriesManagementAdmin.fxml"));
+				EntriesManagement_Controller.mainStage = st;
+				StackPane root = (StackPane) FXMLLoader
+						.load(getClass().getResource("/pkgMain/res/fxml/EntriesManagementAdmin.fxml"));
 				Scene scene = new Scene(root);
-				EntriesManagement_Controller.mainStage= (Stage) txtMessage.getScene().getWindow();
 				st.initOwner(txtMessage.getScene().getWindow());
 				st.initStyle(StageStyle.UTILITY);
 				st.initModality(Modality.APPLICATION_MODAL);
@@ -144,17 +152,56 @@ public class Dashboard_Controller
 				st.setScene(scene);
 				st.show();
 				st.requestFocus();
+			} else if (event.getSource().equals(mtnmActivityManagement))
+			{
+				Stage st = new Stage();
+				ActivityManagement_Controller.mainStage = st;
+				StackPane root = (StackPane) FXMLLoader
+						.load(getClass().getResource("/pkgMain/res/fxml/ActivityManagementAdmin.fxml"));
+				Scene scene = new Scene(root);
+				st.initOwner(txtMessage.getScene().getWindow());
+				st.initStyle(StageStyle.UTILITY);
+				st.initModality(Modality.APPLICATION_MODAL);
+				st.setResizable(false);
+				st.setScene(scene);
+				st.show();
+				st.requestFocus();
+				st.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent we)
+					{
+						try
+						{
+							db.selectAllActivities();
+							listActivities.setAll(db.getAllActivities());
+						} catch (Exception e)
+						{
+							handleException(e);
+						}
+					}
+				});
 			} else if (event.getSource().equals(mntmShowStatistics))
 			{
-				// TODO
+				Stage st = new Stage();
+				EntriesManagement_Controller.mainStage = st;
+				StackPane root = (StackPane) FXMLLoader
+						.load(getClass().getResource("/pkgMain/res/fxml/StatisticsAdmin.fxml"));
+				Scene scene = new Scene(root);
+				st.initOwner(txtMessage.getScene().getWindow());
+				st.initStyle(StageStyle.UTILITY);
+				st.initModality(Modality.APPLICATION_MODAL);
+				st.setResizable(false);
+				st.setScene(scene);
+				st.show();
+				st.requestFocus();
 			}
 		} catch (Exception e)
 		{
-			hanldeException(e);
+			handleException(e);
 		}
 	}
 
-	public void hanldeException(Exception e)
+	public void handleException(Exception e)
 	{
 		ExceptionHandler.hanldeUnexpectedException(e);
 	}

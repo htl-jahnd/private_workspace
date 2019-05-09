@@ -29,8 +29,8 @@ CREATE TABLE entries(
   user_id VARCHAR2(30),
   start_time TIMESTAMP,
   end_time TIMESTAMP,
-  CONSTRAINT fk_entry_user FOREIGN KEY (user_id) REFERENCES users(username),
-  CONSTRAINT fk_entry_activity FOREIGN KEY (activity_id) REFERENCES activities(id)
+  CONSTRAINT fk_entry_user FOREIGN KEY (user_id) REFERENCES users(username) ON DELETE CASCADE,
+  CONSTRAINT fk_entry_activity FOREIGN KEY (activity_id) REFERENCES activities(id) ON DELETE CASCADE
 );
 
 select * from users;
@@ -45,4 +45,4 @@ insert into activities values(seqActivity.nextval, 'Programming');
 
 commit;
 
-select * from entries;
+select * from activities;

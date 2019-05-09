@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="293.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkgController.ActivityManagement_Controller">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Label alignment="CENTER" layoutY="10.0" prefHeight="29.0" prefWidth="251.0" text="Activity Management" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <JFXListView fx:id="lstViewActivities" layoutY="75.0" onMouseClicked="#onSelectListActivity" prefHeight="181.0" prefWidth="293.0" />
+            <GridPane layoutX="11.0" layoutY="345.0" prefHeight="29.0" prefWidth="272.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="107.0" minWidth="10.0" prefWidth="86.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="182.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label prefHeight="17.0" prefWidth="111.0" text="Name:" />
+                  <JFXTextField fx:id="txtActivityName" editable="false" prefHeight="27.0" prefWidth="172.0" promptText="Activities Name" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+            <StackPane layoutX="11.0" layoutY="394.0" prefHeight="27.0" prefWidth="272.0">
+               <children>
+                  <HBox fx:id="hboxEditDelete" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <JFXButton fx:id="btnDeleteEntry" onAction="#onSelectButton" prefHeight="27.0" prefWidth="120.0" text="Delete" />
+                        <JFXButton fx:id="btnEditActivity" onAction="#onSelectButton" prefHeight="27.0" prefWidth="120.0" text="Edit">
+                           <HBox.margin>
+                              <Insets left="32.0" />
+                           </HBox.margin>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="hboxSaveCancel" prefHeight="100.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <JFXButton fx:id="btnCancelActivity" onAction="#onSelectButton" prefWidth="120.0" text="Cancel" />
+                        <JFXButton fx:id="btnSaveActivity" onAction="#onSelectButton" prefWidth="120.0" text="Save">
+                           <HBox.margin>
+                              <Insets left="31.0" />
+                           </HBox.margin>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
+            <JFXButton fx:id="btnCancel" layoutX="11.0" layoutY="470.0" onAction="#onSelectButton" prefHeight="27.0" prefWidth="90.0" text="Cancel" />
+            <JFXButton fx:id="btnSave" layoutX="193.0" layoutY="470.0" onAction="#onSelectButton" prefHeight="27.0" prefWidth="90.0" text="Save" />
+            <JFXButton fx:id="btnAddActivity" layoutX="71.0" layoutY="278.0" onAction="#onSelectButton" prefHeight="27.0" prefWidth="152.0" text="Add Activity" />
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
