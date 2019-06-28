@@ -7,15 +7,11 @@
 	<classpathentry kind="src" path="I_O_Files"/>
 	<classpathentry kind="src" path="Mailer"/>
 	<classpathentry kind="src" path="Validator"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-9">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/Users/david.jahn/git/private-repository/Static_Things/Play_Audio/JMF/jmf-2.1.1e.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="Mailer/lib/gson/gson-2.5.jar"/>
 	<classpathentry kind="lib" path="Mailer/lib/javaMail/javax.mail.jar"/>
 	<classpathentry kind="lib" path="Validator/lib/commons-validator-1.6/commons-validator-1.6.jar"/>
 	<classpathentry kind="lib" path="Mailer/Activation/activation.jar"/>
+	<classpathentry kind="lib" path="Play_Audio/JMF/jmf-2.1.1e.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
