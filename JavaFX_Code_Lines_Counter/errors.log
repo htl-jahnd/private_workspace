@@ -1,0 +1,5 @@
+2019-06-29T01:10:45.075   : Message: A directory must be chosen.  , Trace:     controller.MainController.onSelectButton(MainController.java:172)
+    sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+    sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+    java.lang.reflect.Method.invoke(Unknown Source)
