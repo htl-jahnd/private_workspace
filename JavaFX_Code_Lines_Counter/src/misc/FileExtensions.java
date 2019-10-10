@@ -15,6 +15,7 @@ public interface FileExtensions {
 	String SWIFT=".swift";
 	String RUBY =".rb";
 	String GOLANG = ".go";
+	String KOTLIN =".kt";
 	//Other Files
 	String HTML =".html";
 	String XML =".xml";
@@ -24,5 +25,6 @@ public interface FileExtensions {
 	String SCSS =".scss";
 	String MARKDOWN=".markdown";
 	String MARKDOWN_2=".,md";
+	
 
 }

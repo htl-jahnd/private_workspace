@@ -128,6 +128,9 @@ public class MainController implements FileExtensions {
     
     @FXML
     private HBox paneChooseFolder;
+    
+    @FXML
+    private JFXCheckBox chckKotlin;
 
 	@FXML
 	void onSelectButton(ActionEvent event) {
@@ -276,6 +279,8 @@ public class MainController implements FileExtensions {
 			ret.add(HTML);
 		if (chckJs.isSelected())
 			ret.add(JAVASCRIPT);
+		if(chckKotlin.isSelected())
+			ret.add(KOTLIN);
 		if (chckMarkdown.isSelected()) {
 			ret.add(MARKDOWN);
 			ret.add(MARKDOWN_2);

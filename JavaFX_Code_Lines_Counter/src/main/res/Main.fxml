@@ -16,8 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="578.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controller.MainController">
+<AnchorPane prefHeight="616.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
       <HBox fx:id="paneChooseFile" disable="true" layoutX="47.0" layoutY="69.0" prefHeight="28.0" prefWidth="512.0">
          <children>
@@ -47,14 +46,14 @@
          </children>
       </HBox>
       <JFXRadioButton fx:id="rdbtnCheckFolder" layoutX="31.0" layoutY="112.0" onAction="#rdbtnClicked" prefHeight="17.0" prefWidth="122.0" selected="true" text="Check Folder" toggleGroup="$groupCheck" />
-      <VBox fx:id="paneProgrammingLanguages" layoutX="21.0" layoutY="198.0">
+      <VBox fx:id="paneProgrammingLanguages" layoutX="21.0" layoutY="198.0" prefHeight="147.0" prefWidth="512.0">
          <children>
             <Label prefHeight="25.0" prefWidth="512.0" styleClass="heading" text="Programming Languages">
                <VBox.margin>
                   <Insets bottom="13.0" />
                </VBox.margin>
             </Label>
-            <GridPane prefHeight="90.0" prefWidth="512.0">
+            <GridPane prefHeight="112.0" prefWidth="512.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="104.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="105.0" />
@@ -65,6 +64,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <JFXCheckBox fx:id="chbxJava" prefHeight="18.0" prefWidth="95.0" text="*.java" />
@@ -79,11 +79,12 @@
                   <JFXCheckBox fx:id="chckSwift" prefHeight="18.0" prefWidth="98.0" text="*.swift" GridPane.columnIndex="3" />
                   <JFXCheckBox fx:id="chckRb" prefHeight="18.0" prefWidth="112.0" text="*.rb" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <JFXCheckBox fx:id="chckGo" prefHeight="18.0" prefWidth="128.0" text="*.go" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <JFXCheckBox fx:id="chckKotlin" prefHeight="18.0" prefWidth="110.0" text="*.kt" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </children>
       </VBox>
-      <VBox fx:id="paneOthers" layoutX="21.0" layoutY="365.0">
+      <VBox fx:id="paneOthers" layoutX="21.0" layoutY="408.0">
          <children>
             <Label prefHeight="17.0" prefWidth="512.0" styleClass="heading" text="Other Files">
                <VBox.margin>
@@ -113,14 +114,14 @@
             </GridPane>
          </children>
       </VBox>
-      <JFXButton id="btnStart" fx:id="btnStart" defaultButton="true" layoutX="455.0" layoutY="529.0" onAction="#onSelectButton" prefHeight="25.0" prefWidth="110.0" text="Start" />
-      <JFXButton id="btnCancel" fx:id="btnCancel" cancelButton="true" layoutX="21.0" layoutY="529.0" onAction="#onSelectButton" prefHeight="25.0" prefWidth="106.0" text="Cancel" />
-      <JFXProgressBar fx:id="progressBar" layoutX="31.0" layoutY="492.0" prefHeight="7.0" prefWidth="512.0" progress="0.0" />
-      <Label fx:id="lblProgressInformation" layoutX="240.0" layoutY="506.0" prefHeight="16.0" prefWidth="303.0" text="Progress Information">
+      <JFXButton id="btnStart" fx:id="btnStart" defaultButton="true" layoutX="455.0" layoutY="562.0" onAction="#onSelectButton" prefHeight="25.0" prefWidth="110.0" text="Start" />
+      <JFXButton id="btnCancel" fx:id="btnCancel" cancelButton="true" layoutX="21.0" layoutY="562.0" onAction="#onSelectButton" prefHeight="25.0" prefWidth="106.0" text="Cancel" />
+      <JFXProgressBar fx:id="progressBar" layoutX="31.0" layoutY="525.0" prefHeight="7.0" prefWidth="512.0" progress="0.0" />
+      <Label fx:id="lblProgressInformation" layoutX="240.0" layoutY="539.0" prefHeight="16.0" prefWidth="303.0" text="Progress Information">
          <font>
             <Font size="11.0" />
          </font>
       </Label>
-      <Label layoutX="144.0" layoutY="506.0" text="Lines of Code: " />
+      <Label layoutX="144.0" layoutY="539.0" text="Lines of Code: " />
    </children>
 </AnchorPane>

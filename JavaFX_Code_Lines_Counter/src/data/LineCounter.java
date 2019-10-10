@@ -10,6 +10,7 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
 
 public class LineCounter extends Task<Double> {
@@ -35,6 +36,8 @@ public class LineCounter extends Task<Double> {
 	public DoubleProperty getLines() {
 		return lines;
 	}
+	
+	
 
 	private void setLines(double lines) {
 		this.lines.set(lines);

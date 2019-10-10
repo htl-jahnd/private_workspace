@@ -285,3 +285,8 @@
     oracle.jdbc.dbaccess.DBError.throwSqlException(DBError.java:333)
     oracle.jdbc.driver.OracleConnection.<init>(OracleConnection.java:404)
     oracle.jdbc.driver.OracleDriver.getConnectionInstance(OracleDriver.java:468)
+2019-08-30T15:24:43.056   : Message: I/O-Fehler: The Network Adapter could not establish the connection  , Trace:     oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:774)
+    oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:688)
+    oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:39)
+    oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:691)
+    java.sql.DriverManager.getConnection(Unknown Source)
